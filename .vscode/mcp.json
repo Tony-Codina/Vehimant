@@ -1,0 +1,25 @@
+{
+  "servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${workspaceFolder}"]
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/git-mcp-server"]
+    },
+    "http-curl": {
+      "command": "npx",
+      "args": ["-y", "@mcp-get-community/server-curl"]
+    },
+    "shell": {
+      "command": "npx",
+      "args": ["-y", "@mkusaka/mcp-shell-server"],
+      "env": {
+        "WORKDIR": "${workspaceFolder}",
+        "ALLOW_COMMANDS": "symfony,composer,make",
+        "DENY_COMMANDS": "rm,sudo,git,docker"
+      }
+    }
+  }
+}
