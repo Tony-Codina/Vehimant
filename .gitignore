@@ -1,0 +1,53 @@
+
+
+# Symfony & PHP
+/.env
+/.env.*
+/.env.local
+/.env.dev
+/.env.test
+/.env.production
+/.env.staging
+/.env.local.php
+/config/secrets/**/prod.decrypt.private.php
+/public/bundles/
+/public/assets/
+/assets/vendor/
+/vendor/
+/composer.lock
+
+# Cache, logs, JWT keys
+/var/cache/
+/var/log/
+/var/jwt/private.pem
+
+# PHPUnit
+/phpunit.xml
+/.phpunit.cache/
+/phpunit.dist.xml
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+*.lock
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Others
+mcp-shell.log
+
+# Node, frontend (if used)
+node_modules/
+dist/
+build/
+coverage/
+
+# Docker compose (disabled)
+docker-compose.disabled
