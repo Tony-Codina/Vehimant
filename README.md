@@ -34,59 +34,94 @@ projectVehiMant/
 ├── src/
 │   ├── Application/
 │   │   ├── Command/
-│   │   │   └── Vehicle/
-│   │   │       ├── CreateVehicle/
-│   │   │       ├── UpdateOdometer/
-│   │   │       ├── RegisterMaintenance/
-│   │   │       └── DeleteVehicle/
+│   │   │   ├── Vehicle/
+│   │   │   │   ├── CreateVehicle/
+│   │   │   │   ├── UpdateOdometer/
+│   │   │   │   ├── RegisterMaintenance/
+│   │   │   │   └── DeleteVehicle/
+│   │   │   └── User/
+│   │   │       ├── CreateUser/
+│   │   │       ├── UpdateUser/
+│   │   │       ├── RegisterUser/
+│   │   │       ├── DeleteUser/
+│   │   │       └── ChangePassword/
 │   │   ├── Query/
-│   │   │   └── Vehicle/
-│   │   │       ├── GetVehicle/
-│   │   │       │   └── GetVehicleQuery.php
-│   │   │       ├── ListVehiclesByOwner/
-│   │   │       │   └── ListVehiclesByOwnerQuery.php
+│   │   │   ├── Vehicle/
+│   │   │   │   ├── GetVehicle/
+│   │   │   │   │   └── GetVehicleQuery.php
+│   │   │   │   ├── ListVehiclesByOwner/
+│   │   │   │   │   └── ListVehiclesByOwnerQuery.php
+│   │   │   │   └── DTO/
+│   │   │   └── User/
+│   │   │       ├── GetUser/
+│   │   │       ├── ListUsers/
+│   │   │       ├── FindUserByEmail/
 │   │   │       └── DTO/
 │   │   └── Handler/
 │   │       ├── Command/
-│   │       │   └── Vehicle/
-│   │       │       ├── CreateVehicle/
-│   │       │       ├── UpdateOdometer/
-│   │       │       ├── RegisterMaintenance/
-│   │       │       └── DeleteVehicle/
+│   │       │   ├── Vehicle/
+│   │       │   │   ├── CreateVehicle/
+│   │       │   │   ├── UpdateOdometer/
+│   │       │   │   ├── RegisterMaintenance/
+│   │       │   │   └── DeleteVehicle/
+│   │       │   └── User/
+│   │       │       ├── CreateUser/
+│   │       │       ├── UpdateUser/
+│   │       │       ├── RegisterUser/
+│   │       │       ├── DeleteUser/
+│   │       │       └── ChangePassword/
 │   │       └── Query/
-│   │           └── Vehicle/
-│   │               ├── GetVehicle/
-│   │               │   └── GetVehicleHandler.php
-│   │               └── ListVehiclesByOwner/
-│   │                   └── ListVehiclesByOwnerHandler.php
+│   │           ├── Vehicle/
+│   │           │   ├── GetVehicle/
+│   │           │   │   └── GetVehicleHandler.php
+│   │           │   └── ListVehiclesByOwner/
+│   │           │       └── ListVehiclesByOwnerHandler.php
+│   │           └── User/
+│   │               ├── GetUser/
+│   │               ├── ListUsers/
+│   │               └── FindUserByEmail/
 │   ├── Domain/
-│   │   └── Vehicle/
+│   │   ├── Vehicle/
+│   │   │   ├── Entity/
+│   │   │   │   ├── Vehicle.php
+│   │   │   │   └── MaintenanceType.php
+│   │   │   └── Repository/
+│   │   │       └── VehicleRepositoryInterface.php
+│   │   └── User/
 │   │       ├── Entity/
-│   │       │   ├── Vehicle.php
-│   │       │   └── MaintenanceType.php
+│   │       │   └── User.php
 │   │       └── Repository/
-│   │           └── VehicleRepositoryInterface.php
+│   │           └── UserRepositoryInterface.php
 │   ├── Infrastructure/
-│   │   └── Vehicle/
+│   │   ├── Vehicle/
+│   │   │   └── Repository/
+│   │   │       └── DoctrineVehicleRepository.php
+│   │   └── User/
 │   │       └── Repository/
-│   │           └── DoctrineVehicleRepository.php
+│   │           └── DoctrineUserRepository.php
 │   └── UI/
 │       └── Controller/
-│           └── VehicleController.php
+│           ├── VehicleController.php
+│           └── AuthController.php
 ├── tests/
 │   ├── Unit/
-│   │   └── Application/
-│   │       └── Query/
-│   │           └── Vehicle/
-│   │               ├── GetVehicle/
-│   │               │   └── GetVehicleHandlerTest.php
-│   │               └── ListVehiclesByOwner/
-│   │                   └── ListVehiclesByOwnerHandlerTest.php
+│   │     └── Query/
+│   │         ├── Vehicle/
+│   │         │   ├── GetVehicle/
+│   │         │   │   └── GetVehicleHandlerTest.php
+│   │         │   └── ListVehiclesByOwner/
+│   │         │       └── ListVehiclesByOwnerHandlerTest.php
+│   │         └── User/
+│   │             ├── GetUser/
+│   │             │   └── GetUserHandlerTest.php
+│   │             └── ListUsers/
+│   │                 └── ListUsersHandlerTest.php
 │   ├── Integration/
 │   ├── Functional/
 │   └── Support/
 │       └── Double/
-│           └── Vehicle/
+│           ├── Vehicle/
+│           └── User/
 ├── templates/
 ├── translations/
 ├── var/

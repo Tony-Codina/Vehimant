@@ -1,0 +1,9 @@
+nelmio_cors:
+    defaults:
+        allow_origin: ['http://localhost:4200','capacitor://localhost','http://localhost']
+        allow_methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
+        allow_headers: ['Content-Type','Authorization']
+        expose_headers: ['Authorization']
+        max_age: 3600
+    paths:
+        '^/api/': ~

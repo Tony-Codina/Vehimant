@@ -20,6 +20,7 @@ return [
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     'api_vehicle_get' => [['id'], ['_controller' => 'App\\UI\\Controller\\GetVehicleController::get'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/vehicles']], [], [], []],
     'api_vehicles_by_owner' => [['ownerId'], ['_controller' => 'App\\UI\\Controller\\ListVehiclesByOwnerController::list'], [], [['text', '/vehicles'], ['variable', '/', '[^/]++', 'ownerId', true], ['text', '/api/owners']], [], [], []],
+    'login_check' => [[], [], [], [['text', '/api/login_check']], [], [], []],
     'App\UI\Controller\GetVehicleController::get' => [['id'], ['_controller' => 'App\\UI\\Controller\\GetVehicleController::get'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/vehicles']], [], [], []],
     'App\UI\Controller\ListVehiclesByOwnerController::list' => [['ownerId'], ['_controller' => 'App\\UI\\Controller\\ListVehiclesByOwnerController::list'], [], [['text', '/vehicles'], ['variable', '/', '[^/]++', 'ownerId', true], ['text', '/api/owners']], [], [], []],
 ];

@@ -6,6 +6,7 @@ require_once __DIR__.\DIRECTORY_SEPARATOR.'ProviderConfig'.\DIRECTORY_SEPARATOR.
 require_once __DIR__.\DIRECTORY_SEPARATOR.'ProviderConfig'.\DIRECTORY_SEPARATOR.'EntityConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'ProviderConfig'.\DIRECTORY_SEPARATOR.'MemoryConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'ProviderConfig'.\DIRECTORY_SEPARATOR.'LdapConfig.php';
+require_once __DIR__.\DIRECTORY_SEPARATOR.'ProviderConfig'.\DIRECTORY_SEPARATOR.'LexikJwtConfig.php';
 
 use Symfony\Component\Config\Loader\ParamConfigurator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -20,6 +21,7 @@ class ProviderConfig
     private $entity;
     private $memory;
     private $ldap;
+    private $lexikJwt;
     private $_usedProperties = [];
 
     /**
@@ -83,6 +85,18 @@ class ProviderConfig
         return $this->ldap;
     }
 
+    public function lexikJwt(array $value = []): \Symfony\Config\Security\ProviderConfig\LexikJwtConfig
+    {
+        if (null === $this->lexikJwt) {
+            $this->_usedProperties['lexikJwt'] = true;
+            $this->lexikJwt = new \Symfony\Config\Security\ProviderConfig\LexikJwtConfig($value);
+        } elseif (0 < \func_num_args()) {
+            throw new InvalidConfigurationException('The node created by "lexikJwt()" has already been initialized. You cannot pass values the second time you call lexikJwt().');
+        }
+
+        return $this->lexikJwt;
+    }
+
     public function __construct(array $value = [])
     {
         if (array_key_exists('id', $value)) {
@@ -115,6 +129,12 @@ class ProviderConfig
             unset($value['ldap']);
         }
 
+        if (array_key_exists('lexik_jwt', $value)) {
+            $this->_usedProperties['lexikJwt'] = true;
+            $this->lexikJwt = new \Symfony\Config\Security\ProviderConfig\LexikJwtConfig($value['lexik_jwt']);
+            unset($value['lexik_jwt']);
+        }
+
         if ([] !== $value) {
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
@@ -137,6 +157,9 @@ class ProviderConfig
         }
         if (isset($this->_usedProperties['ldap'])) {
             $output['ldap'] = $this->ldap->toArray();
+        }
+        if (isset($this->_usedProperties['lexikJwt'])) {
+            $output['lexik_jwt'] = $this->lexikJwt->toArray();
         }
 
         return $output;

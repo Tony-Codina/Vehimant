@@ -21,3 +21,6 @@ services:
 
     App\Domain\Vehicle\Repository\VehicleRepositoryInterface:
         alias: App\Infrastructure\Vehicle\Repository\DoctrineVehicleRepository
+
+    App\Domain\User\Repository\UserRepositoryInterface:
+        alias: App\Infrastructure\User\Repository\DoctrineUserRepository
