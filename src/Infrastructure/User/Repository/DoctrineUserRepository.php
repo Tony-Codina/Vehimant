@@ -45,4 +45,9 @@ final class DoctrineUserRepository implements UserRepositoryInterface
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    public function findByIdUser(string $id): ?User
+    {
+        return $this->em->getRepository(User::class)->find($id);
+    }
 }

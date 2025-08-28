@@ -24,6 +24,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Domain/Vehicle/Entity'
                 prefix: 'App\Domain\Vehicle\Entity'
                 alias: Vehicle
+            User:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Domain/User/Entity'
+                prefix: 'App\Domain\User\Entity'
+                alias: User
         controller_resolver:
             auto_mapping: false
 

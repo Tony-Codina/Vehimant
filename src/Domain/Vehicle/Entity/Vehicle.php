@@ -3,6 +3,7 @@
 namespace App\Domain\Vehicle\Entity;
 
 use App\Domain\Vehicle\Entity\MaintenanceType;
+use App\Domain\User\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
@@ -33,8 +34,9 @@ class Vehicle
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $lastMaintenanceAt;
 
-    #[ORM\Column(type: 'ulid')]
-    private Ulid $ownerId;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    private User $owner;
 
     public function __construct(
         string $name,
@@ -42,7 +44,7 @@ class Vehicle
         int $odometerKm,
         MaintenanceType $lastMaintenanceType,
         \DateTimeImmutable $lastMaintenanceAt,
-        Ulid $ownerId
+        User $owner
     ) {
         $this->id = new Ulid();
         $this->name = $name;
@@ -51,9 +53,24 @@ class Vehicle
         $this->odometerKm = $odometerKm;
         $this->lastMaintenanceType = $lastMaintenanceType;
         $this->lastMaintenanceAt = $lastMaintenanceAt;
-        $this->ownerId = $ownerId;
+        $this->owner = $owner;
     }
-    public function ownerId(): Ulid { return $this->ownerId; }
+
+    public function getOwner(): User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(User $owner): self
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
+    public function getOwnerId(): string
+    {
+        return $this->owner->getIdAsString();
+    }
 
     public function id(): Ulid { return $this->id; }
     public function name(): string { return $this->name; }
@@ -68,4 +85,5 @@ class Vehicle
     {
         return $this->odometerKm + $this->lastMaintenanceType->intervalKm();
     }
+    // ...existing code...
 }

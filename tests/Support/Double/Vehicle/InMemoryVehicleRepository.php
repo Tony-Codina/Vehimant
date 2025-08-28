@@ -21,11 +21,12 @@ final class InMemoryVehicleRepository implements VehicleRepositoryInterface
         $this->items[(string) $vehicle->id()] = $vehicle;
     }
 
-    public function listByOwner(Ulid $ownerId, int $page = 1, int $perPage = 25): array
+    public function listByOwner(\App\Domain\User\Entity\User $owner, int $page = 1, int $perPage = 25): array
     {
+        $ownerId = (string) $owner->getId();
         $filtered = array_filter(
             $this->items,
-            fn (Vehicle $v) => (string) $v->ownerId() === (string) $ownerId
+            fn (Vehicle $v) => (string) $v->getOwner()->getId() === $ownerId
         );
         $filtered = array_values($filtered);
         usort($filtered, fn (Vehicle $a, Vehicle $b) => $a->plate() <=> $b->plate());

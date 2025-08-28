@@ -28,7 +28,7 @@ final class GetVehicleHandler
             'lastMaintenanceType' => $vehicle->lastMaintenanceType()->value,
             'lastMaintenanceAt' => $vehicle->lastMaintenanceAt()->format(\DateTimeInterface::ATOM),
             'nextMaintenanceDueKm' => $vehicle->nextMaintenanceDueKm(),
-            'ownerId' => (string) $vehicle->ownerId(),
+            'ownerId' => (string) $vehicle->getOwner()->getId(),
         ];
     }
 }

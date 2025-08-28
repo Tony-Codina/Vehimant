@@ -11,4 +11,6 @@ interface UserRepositoryInterface
     public function emailExists(string $email): bool;
 
     public function findByEmail(string $email): ?User;
+
+    public function findByIdUser(string $id): ?User;
 }

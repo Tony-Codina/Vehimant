@@ -4,6 +4,7 @@ namespace App\Infrastructure\Vehicle\Repository;
 
 use App\Domain\Vehicle\Entity\Vehicle;
 use App\Domain\Vehicle\Repository\VehicleRepositoryInterface;
+use App\Domain\User\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Ulid;
@@ -26,11 +27,11 @@ final class DoctrineVehicleRepository extends ServiceEntityRepository implements
         $em->persist($vehicle);
         $em->flush();
     }
-    public function listByOwner(Ulid $ownerId, int $page = 1, int $perPage = 25): array
+    public function listByOwner(User $owner, int $page = 1, int $perPage = 25): array
     {
         $qb = $this->createQueryBuilder('v')
-            ->where('v.ownerId = :ownerId')
-            ->setParameter('ownerId', (string) $ownerId)
+            ->where('v.owner = :owner')
+            ->setParameter('owner', $owner)
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage);
         return $qb->getQuery()->getResult();
