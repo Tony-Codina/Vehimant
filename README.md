@@ -100,9 +100,19 @@ projectVehiMant/
 │   │       └── Repository/
 │   │           └── DoctrineUserRepository.php
 │   └── UI/
-│       └── Controller/
-│           ├── VehicleController.php
-│           └── AuthController.php
+│       ├── Controller/
+│       │   ├── VehicleController.php
+│       │   └── AuthController.php
+│       └── Http/
+│           └── RequestDto/
+│               ├── User/
+│               │   └── CreateUserRequestDto.php
+│               │   └── UpdateUserRequestDto.php
+│               │   └── DeleteUserRequestDto.php
+│               └── Vehicle/
+│                   └── CreateVehicleRequestDto.php
+│                   └── UpdateVehicleRequestDto.php
+│                   └── DeleteVehicleRequestDto.php
 ├── tests/
 │   ├── Unit/
 │   │     └── Query/

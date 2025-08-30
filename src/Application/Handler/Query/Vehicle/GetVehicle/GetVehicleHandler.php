@@ -20,14 +20,14 @@ final class GetVehicleHandler
         }
 
         return [
-            'id' => (string) $vehicle->id(),
-            'name' => $vehicle->name(),
-            'plate' => $vehicle->plate(),
-            'createdAt' => $vehicle->createdAt()->format(\DateTimeInterface::ATOM),
-            'odometerKm' => $vehicle->odometerKm(),
-            'lastMaintenanceType' => $vehicle->lastMaintenanceType()->value,
-            'lastMaintenanceAt' => $vehicle->lastMaintenanceAt()->format(\DateTimeInterface::ATOM),
-            'nextMaintenanceDueKm' => $vehicle->nextMaintenanceDueKm(),
+            'id' => (string) $vehicle->getId(),
+            'name' => $vehicle->getName(),
+            'plate' => $vehicle->getPlate(),
+            'createdAt' => $vehicle->getCreatedAt()->format(\DateTimeInterface::ATOM),
+            'odometerKm' => $vehicle->getOdometerKm(),
+            'lastMaintenanceType' => $vehicle->getLastMaintenanceType()->value,
+            'lastMaintenanceAt' => $vehicle->getLastMaintenanceAt()->format(\DateTimeInterface::ATOM),
+            'nextMaintenanceDueKm' => $vehicle->getNextMaintenanceDueKm(),
             'ownerId' => (string) $vehicle->getOwner()->getId(),
         ];
     }

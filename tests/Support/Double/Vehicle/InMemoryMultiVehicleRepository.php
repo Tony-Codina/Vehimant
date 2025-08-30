@@ -6,7 +6,7 @@ use App\Domain\Vehicle\Entity\Vehicle;
 use App\Domain\Vehicle\Repository\VehicleRepositoryInterface;
 use Symfony\Component\Uid\Ulid;
 
-final class InMemoryVehicleRepository implements VehicleRepositoryInterface
+final class InMemoryMultiVehicleRepository implements VehicleRepositoryInterface
 {
     /** @var array<string, Vehicle> */
     private array $items = [];
@@ -18,7 +18,7 @@ final class InMemoryVehicleRepository implements VehicleRepositoryInterface
 
     public function save(Vehicle $vehicle): void
     {
-    $this->items[(string) $vehicle->getId()] = $vehicle;
+        $this->items[(string) $vehicle->getId()] = $vehicle;
     }
 
     public function listByOwner(\App\Domain\User\Entity\User $owner, int $page = 1, int $perPage = 25): array
@@ -29,13 +29,21 @@ final class InMemoryVehicleRepository implements VehicleRepositoryInterface
             fn (Vehicle $v) => (string) $v->getOwner()->getId() === $ownerId
         );
         $filtered = array_values($filtered);
-    usort($filtered, fn (Vehicle $a, Vehicle $b) => $a->getPlate() <=> $b->getPlate());
+        usort($filtered, fn (Vehicle $a, Vehicle $b) => $a->getPlate() <=> $b->getPlate());
         $offset = max(0, ($page - 1) * $perPage);
         return array_slice($filtered, $offset, $perPage);
     }
 
     public function remove(Vehicle $vehicle): void
     {
-    unset($this->items[(string) $vehicle->getId()]);
+        unset($this->items[(string) $vehicle->getId()]);
+    }
+
+    /**
+     * Devuelve todos los vehículos almacenados (sin paginación ni filtro)
+     */
+    public function all(): array
+    {
+        return array_values($this->items);
     }
 }

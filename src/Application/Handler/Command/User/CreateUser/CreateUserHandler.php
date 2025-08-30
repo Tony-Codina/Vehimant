@@ -28,6 +28,13 @@ final class CreateUserHandler
         $hashedPassword = $this->passwordHasher->hashPassword($user, $command->plainPassword);
         $user->setPassword($hashedPassword);
 
+        // Asigna un id manualmente si no existe (tests/unitarios)
+        if ($user->getId() === null) {
+            $reflection = new \ReflectionClass($user);
+            $idProp = $reflection->getProperty('id');
+            $idProp->setAccessible(true);
+            $idProp->setValue($user, \Symfony\Component\Uid\Uuid::v4());
+        }
         $this->userRepository->add($user);
 
         return $user->getIdAsString();

@@ -20,19 +20,23 @@ final class GetVehicleHandlerTest extends TestCase
         $v = new Vehicle(
             'Truck A',
             '1234-ABC',
+            'VIN00000000000001',
             150_000,
             MaintenanceType::B,
             new \DateTimeImmutable('2025-01-15'),
-            $owner
+            $owner,
+            null,
+            null,
+            null
         );
         $repo->save($v);
 
         $handler = new GetVehicleHandler($repo);
-        $result = ($handler)(new GetVehicleQuery($v->id()));
+    $result = ($handler)(new GetVehicleQuery($v->getId()));
 
         $this->assertSame('Truck A', $result['name']);
         $this->assertSame('1234-ABC', $result['plate']);
-        $this->assertSame((string) $v->id(), $result['id']);
+    $this->assertSame((string) $v->getId(), $result['id']);
         $this->assertSame(150_000, $result['odometerKm']);
         $this->assertSame('B', $result['lastMaintenanceType']);
         $this->assertSame(170_000, $result['nextMaintenanceDueKm']); // 150k + 20k
