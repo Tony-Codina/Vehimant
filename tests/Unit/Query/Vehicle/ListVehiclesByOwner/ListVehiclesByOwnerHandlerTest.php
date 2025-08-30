@@ -6,7 +6,7 @@ use App\Application\Handler\Query\Vehicle\ListVehiclesByOwner\ListVehiclesByOwne
 use App\Application\Query\Vehicle\ListVehiclesByOwner\ListVehiclesByOwnerQuery;
 use App\Domain\Vehicle\Entity\Vehicle;
 use App\Domain\Vehicle\Entity\MaintenanceType;
-use App\Tests\Support\Double\Vehicle\InMemoryVehicleRepository;
+use App\Tests\Support\Double\Vehicle\InMemoryMultiVehicleRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
@@ -14,16 +14,16 @@ final class ListVehiclesByOwnerHandlerTest extends TestCase
 {
     public function test_it_lists_vehicles_by_owner_with_pagination(): void
     {
-        $repo = new InMemoryVehicleRepository();
+    $repo = new InMemoryMultiVehicleRepository();
         $owner1 = $this->createUser('owner1@example.com');
         $owner2 = $this->createUser('owner2@example.com');
 
         // 3 vehículos para owner1, 2 para owner2
-        $v1 = new Vehicle('Truck A', 'A-1', 1000, MaintenanceType::A, new \DateTimeImmutable('2025-01-01'), $owner1);
-        $v2 = new Vehicle('Truck B', 'B-1', 2000, MaintenanceType::B, new \DateTimeImmutable('2025-01-02'), $owner1);
-        $v3 = new Vehicle('Truck C', 'C-1', 3000, MaintenanceType::C, new \DateTimeImmutable('2025-01-03'), $owner1);
-        $v4 = new Vehicle('Truck D', 'D-1', 4000, MaintenanceType::A, new \DateTimeImmutable('2025-01-04'), $owner2);
-        $v5 = new Vehicle('Truck E', 'E-1', 5000, MaintenanceType::B, new \DateTimeImmutable('2025-01-05'), $owner2);
+    $v1 = new Vehicle('Truck A', 'A-1', 'VIN00000000000001', 1000, MaintenanceType::A, new \DateTimeImmutable('2025-01-01'), $owner1, null, null, null);
+    $v2 = new Vehicle('Truck B', 'B-1', 'VIN00000000000002', 2000, MaintenanceType::B, new \DateTimeImmutable('2025-01-02'), $owner1, null, null, null);
+    $v3 = new Vehicle('Truck C', 'C-1', 'VIN00000000000003', 3000, MaintenanceType::C, new \DateTimeImmutable('2025-01-03'), $owner1, null, null, null);
+    $v4 = new Vehicle('Truck D', 'D-1', 'VIN00000000000004', 4000, MaintenanceType::A, new \DateTimeImmutable('2025-01-04'), $owner2, null, null, null);
+    $v5 = new Vehicle('Truck E', 'E-1', 'VIN00000000000005', 5000, MaintenanceType::B, new \DateTimeImmutable('2025-01-05'), $owner2, null, null, null);
 
         foreach ([$v1, $v2, $v3, $v4, $v5] as $v) {
             $repo->save($v);
@@ -54,19 +54,19 @@ final class ListVehiclesByOwnerHandlerTest extends TestCase
         })($owner2);
         $result = ($handler)(new ListVehiclesByOwnerQuery($owner1Id, 1, 2));
         $this->assertCount(2, $result);
-        $this->assertSame('Truck A', $result[0]->name());
-        $this->assertSame('Truck B', $result[1]->name());
+    $this->assertSame('Truck A', $result[0]->getName());
+    $this->assertSame('Truck B', $result[1]->getName());
 
         // Owner1, página 2, perPage 2
     $result2 = ($handler)(new ListVehiclesByOwnerQuery($owner1Id, 2, 2));
         $this->assertCount(1, $result2);
-        $this->assertSame('Truck C', $result2[0]->name());
+    $this->assertSame('Truck C', $result2[0]->getName());
 
         // Owner2, página 1, perPage 10
     $result3 = ($handler)(new ListVehiclesByOwnerQuery($owner2Id, 1, 10));
         $this->assertCount(2, $result3);
-        $this->assertSame('Truck D', $result3[0]->name());
-        $this->assertSame('Truck E', $result3[1]->name());
+    $this->assertSame('Truck D', $result3[0]->getName());
+    $this->assertSame('Truck E', $result3[1]->getName());
     }
 
     private function createUser(string $email): \App\Domain\User\Entity\User

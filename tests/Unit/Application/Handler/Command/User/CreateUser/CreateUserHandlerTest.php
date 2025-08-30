@@ -5,7 +5,7 @@ namespace Tests\Unit\Application\Handler\Command\User\CreateUser;
 use App\Application\Command\User\CreateUser\CreateUserCommand;
 use App\Application\Handler\Command\User\CreateUser\CreateUserHandler;
 use App\Domain\User\Entity\User;
-use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Tests\Support\Double\User\InMemoryUserRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -13,22 +13,9 @@ final class CreateUserHandlerTest extends TestCase
 {
     public function test_creates_user_successfully(): void
     {
-        $repo   = $this->createMock(UserRepositoryInterface::class);
+        $repo   = new InMemoryUserRepository();
         $hasher = $this->createMock(UserPasswordHasherInterface::class);
 
-        $repo->method('emailExists')->willReturn(false);
-
-        // Verificamos que add() reciba un User con email normalizado y roles asignados
-        $repo->expects($this->once())
-            ->method('add')
-            ->with($this->callback(function (User $u) {
-                $this->assertSame('test@example.com', $u->getEmail());
-                $this->assertContains('ROLE_USER', $u->getRoles());
-                $this->assertNotEmpty($u->getPassword());
-                return true;
-            }));
-
-        // Verificamos que hashPassword se llama con el mismo User y el plainPassword
         $hasher->expects($this->once())
             ->method('hashPassword')
             ->with($this->isInstanceOf(User::class), 'password123')
@@ -40,15 +27,25 @@ final class CreateUserHandlerTest extends TestCase
         $command = new CreateUserCommand('  TEST@example.com  ', 'password123', ['ROLE_USER']);
         $id = $handler($command);
 
+        $user = $repo->findByEmail('test@example.com');
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertSame('test@example.com', $user->getEmail());
+        $this->assertContains('ROLE_USER', $user->getRoles());
+        $this->assertNotEmpty($user->getPassword());
     $this->assertIsString($id);
+    $this->assertNotEmpty($id);
     }
 
     public function test_throws_exception_if_email_exists(): void
     {
-        $repo   = $this->createMock(UserRepositoryInterface::class);
+        $repo   = new InMemoryUserRepository();
         $hasher = $this->createMock(UserPasswordHasherInterface::class);
 
-        $repo->method('emailExists')->willReturn(true);
+    $user = new User();
+    $user->setEmail('duplicate@example.com');
+    $user->setPassword('hashed');
+    $user->setRoles(['ROLE_USER']);
+    $repo->add($user);
 
         $handler = new CreateUserHandler($repo, $hasher);
 
@@ -58,14 +55,17 @@ final class CreateUserHandlerTest extends TestCase
 
     public function test_bubbles_domain_exception_from_repository_add(): void
     {
-        $repo   = $this->createMock(UserRepositoryInterface::class);
+        $repo   = new InMemoryUserRepository();
         $hasher = $this->createMock(UserPasswordHasherInterface::class);
 
-        $repo->method('emailExists')->willReturn(false);
         $hasher->method('hashPassword')->willReturn('hashed');
 
-        // Simula violación de unicidad traducida a DomainException por el repo
-        $repo->method('add')->willThrowException(new \DomainException('User with email "x" already exists.'));
+        // Simula violación de unicidad añadiendo el usuario antes
+    $user = new User();
+    $user->setEmail('x@example.com');
+    $user->setPassword('hashed');
+    $user->setRoles(['ROLE_USER']);
+    $repo->add($user);
 
         $handler = new CreateUserHandler($repo, $hasher);
 

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\UI\Http\RequestDto\User\CreateUserRequestDto;
 
 class UserController
 {
@@ -19,13 +19,8 @@ class UserController
         ValidatorInterface $validator
     ): JsonResponse {
         $data = json_decode($request->getContent(), true) ?? [];
-
-        $constraints = new Assert\Collection([
-            'email' => [new Assert\NotBlank(), new Assert\Email()],
-            'plainPassword' => [new Assert\NotBlank(), new Assert\Length(['min' => 8])]
-        ]);
-
-        $violations = $validator->validate($data, $constraints);
+        $dto = CreateUserRequestDto::fromArray($data);
+        $violations = $validator->validate($dto);
 
         if (count($violations) > 0) {
             $errors = [];
@@ -36,16 +31,11 @@ class UserController
         }
 
         try {
-            $command = new CreateUserCommand(
-                $data['email'],
-                $data['plainPassword'],
-                ['ROLE_USER']
-            );
+            $command = $dto->toCommand();
             $id = $handler($command);
-
             return new JsonResponse([
                 'id' => $id,
-                'email' => strtolower(trim($data['email'])),
+                'email' => strtolower(trim($dto->email)),
                 'roles' => ['ROLE_USER']
             ], 201);
         } catch (\DomainException $e) {
