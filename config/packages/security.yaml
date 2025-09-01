@@ -25,12 +25,11 @@ security:
             stateless: true
             jwt: ~
     access_control:
-        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/google, roles: PUBLIC_ACCESS }
-        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api/users$, roles: PUBLIC_ACCESS, methods: [POST] }
-        - { path: ^/api/me$, roles: ROLE_USER }
-        - { path: ^/api, roles: ROLE_USER }
+    - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
+    - { path: ^/api/auth/google, roles: PUBLIC_ACCESS }
+    - { path: ^/api/new-user$, roles: PUBLIC_ACCESS, methods: [POST] }
+    - { path: ^/api/me$, roles: ROLE_USER }
+    - { path: ^/api, roles: ROLE_USER }
 
 when@test:
     security:
