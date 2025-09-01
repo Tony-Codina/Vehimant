@@ -299,11 +299,12 @@ projectVehiMant/
 ├── public/
 ├── bin/
 └── symfony.lock
+```
 
 ## Instalación y arranque rápido
 
 1. **Clona el repositorio**
-  ```bash
+```bash
   git clone <url>
   cd projectVehiMant
   ```
