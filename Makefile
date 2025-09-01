@@ -14,3 +14,11 @@ dc-up:
 
 dc-down:
 	@docker compose down
+worker:
+	@php bin/console messenger:consume async -vv
+
+worker-once:
+	@php bin/console messenger:consume async -vv --limit=1 --time-limit=30
+
+worker-setup:
+	@php bin/console messenger:setup-transports

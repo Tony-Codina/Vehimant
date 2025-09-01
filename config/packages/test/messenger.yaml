@@ -1,0 +1,9 @@
+framework:
+  messenger:
+    default_bus: messenger.bus.command
+    failure_transport: failed
+    transports:
+      async: 'in-memory://'
+      failed: 'in-memory://'
+    routing:
+      App\Application\Command\User\CreateUser\CreateUserCommand: async
